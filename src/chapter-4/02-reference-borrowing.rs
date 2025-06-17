@@ -20,8 +20,39 @@ fn main() {
 
     // PART 3 可变引用
     let mut str_bro_mut = String::from("hello");
-    change_mut(&mut str_bro_mut);
+    let a = &mut str_bro_mut;
+    change_mut(a);
+    //a被销毁
     println!("new str_bro_mut is {str_bro_mut}");
+    // 可变引用的限制：不可重复引用
+    // let b = &mut str_bro_mut;
+    // let c = &mut str_bro_mut; // 报错
+    // println!("b={b}, c={c}");
+
+    let d = &mut str_bro_mut;
+    println!("d= {d}");
+    {
+        let e = &mut str_bro_mut;
+        println!("e= {e}");
+    }
+    let f = &mut str_bro_mut;
+    println!("f= {f}");
+
+    // let g = &str_bro_mut;
+    // let h = &str_bro_mut;
+    // let i = &mut str_bro_mut; //报错
+    // println!("{},{},{}", g, h, i);
+
+    // 可变引用的限制：可变引用和不可变引用不可在同一作用域下共存，需要销毁之前的才可以创建之后的
+    let j = &str_bro_mut;
+    let k = &str_bro_mut;
+    println!("j={},k={}", j, k);
+    let l = &mut str_bro_mut;
+    println!("l={}", l);
+
+    // PART 4 悬垂引用
+    // let refer_none: &String = dangling(); //报错
+    // println!("refer_none={refer_none}")
 }
 
 fn calc_str(s: String) -> (usize, String) {
@@ -41,3 +72,8 @@ fn calc_len(s: &String) -> usize {
 fn change_mut(s: &mut String) {
     s.push_str(", world");
 }
+
+fn dangling() -> &String {
+    let s = String::from("this will be empty");
+    &s
+} // s 被销毁，只保留了当前内存的指针引用 ，即形成了悬浮引用
