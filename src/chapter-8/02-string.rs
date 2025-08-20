@@ -52,5 +52,7 @@ fn main() {
     for b in s4_char.bytes() {
         println!("b={b}");
     }
+    let chars: Vec<char> = s4_char.chars().collect();
+    println!("char.length={},byte.length={}", chars.len(), s4_char.len())
     // 可以发现 c和b不一定是一一对应的，因为rust中字符串为utf-8不定长编码
 }
